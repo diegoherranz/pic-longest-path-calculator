@@ -30,93 +30,80 @@ def printverbose(toPrint, depth=0):
 #Instructions
 #instruction:[size (bytes), cycles (no exec. change in conditionals), conditional?, typeOfInstruction]
 instructions={
-	"addwf":[2, 1, "Unconditional", "Normal"],
-	"addwfc":[2, 1, "Unconditional", "Normal"],
-	"andwf":[2, 1, "Unconditional", "Normal"],
-	"clrf":[2, 1, "Unconditional", "Normal"],
-	"comf":[2, 1, "Unconditional", "Normal"],
-	"cpfseq":[2, 1, "Conditional", "Skip"],
-	"cpfsgt":[2, 1, "Conditional", "Skip"],
-	"cpfslt":[2, 1, "Conditional", "Skip"],
-	"decf":[2, 1, "Unconditional", "Normal"],
-	"decfsz":[2, 1, "Conditional", "Skip"],
-	"dcfsnz":[2, 1, "Conditional", "Skip"],
-	"incf":[2, 1, "Unconditional", "Normal"],
-	"incfsz":[2, 1, "Conditional", "Skip"],
-	"infsnz":[2, 1, "Conditional", "Skip"],
-	"iorwf":[2, 1, "Unconditional", "Normal"],
-	"movf":[2, 1, "Unconditional", "Normal"],
-	"movff":[4, 2, "Unconditional", "Normal"],
-	"movwf":[2, 1, "Unconditional", "Normal"],
-	"mulwf":[2, 1, "Unconditional", "Normal"],
-	"negf":[2, 1, "Unconditional", "Normal"],
-	"rlcf":[2, 1, "Unconditional", "Normal"],
-	"rlncf":[2, 1, "Unconditional", "Normal"],
-	"rrcf":[2, 1, "Unconditional", "Normal"],
-	"rrncf":[2, 1, "Unconditional", "Normal"],
-	"setf":[2, 1, "Unconditional", "Normal"],
-	"subfwb":[2, 1, "Unconditional", "Normal"],
-	"subwf":[2, 1, "Unconditional", "Normal"],
-	"subwfb":[2, 1, "Unconditional", "Normal"],
-	"swapf":[2, 1, "Unconditional", "Normal"],
-	"tstfsz":[2, 1, "Conditional", "Skip"],
-	"xorwf":[2, 1, "Unconditional", "Normal"],
-	"bcf":[2, 1, "Unconditional", "Normal"],
-	"bsf":[2, 1, "Unconditional", "Normal"],
-	"btfsc":[2, 1, "Conditional", "Skip"],
-	"btfss":[2, 1, "Conditional", "Skip"],
-	"btg":[2, 1, "Unconditional", "Normal"],
-	"bc":[2, 1, "Conditional", "Branch"],
-	"bn":[2, 1, "Conditional", "Branch"],
-	"bnc":[2, 1, "Conditional", "Branch"],
-	"bnn":[2, 1, "Conditional", "Branch"],
-	"bnov":[2, 1, "Conditional", "Branch"],
-	"bnz":[2, 1, "Conditional", "Branch"],
-	"bov":[2, 1, "Conditional", "Branch"],
-	"bra":[2, 2, "Unconditional", "Branch"],
-	"bz":[2, 1, "Conditional", "Branch"],
-	"call":[4, 2, "Unconditional", "Call"],
-	"clrwdt":[2, 1, "Unconditional", "Normal"],
-	"daw":[2, 1, "Unconditional", "Normal"],
-	"goto":[4, 2, "Unconditional", "Branch"],
-	"nop":[2, 1, "Unconditional", "Normal"],
-	"pop":[2, 1, "Unconditional", "Normal"],
-	"push":[2, 1, "Unconditional", "Normal"],
-	"rcall":[2, 2, "Unconditional", "Call"],
-	"reset":[2, 1, "Unconditional", "Unknown"],
-	"retfie":[2, 2, "Unconditional", "Return"],
-	"retlw":[2, 2, "Unconditional", "Return"],
-	"return":[2, 2, "Unconditional", "Return"],
-	"sleep":[2, 1, "Unconditional", "Unknown"],
-	"addlw":[2, 1, "Unconditional", "Normal"],
-	"andlw":[2, 1, "Unconditional", "Normal"],
-	"iorlw":[2, 1, "Unconditional", "Normal"],
-	"lfsr":[4, 2, "Unconditional", "Normal"],
-	"movlb":[2, 1, "Unconditional", "Normal"],
-	"movlw":[2, 1, "Unconditional", "Normal"],
-	"mullw":[2, 1, "Unconditional", "Normal"],
-	"sublw":[2, 1, "Unconditional", "Normal"],
-	"xorlw":[2, 1, "Unconditional", "Normal"],
-	"blrd*":[2, 1, "Unconditional", "Normal"],
-	"tblrd":[2, 2, "Unconditional", "Normal"],
-	"tblwt":[2, 2, "Unconditional", "Normal"],
-	"unknown":[2, 1, "Unconditional", "Unknown"]
+	"addwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"addwfc":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"andwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"clrf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"comf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"cpfseq":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"cpfsgt":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"cpfslt":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"decf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"decfsz":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"dcfsnz":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"incf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"incfsz":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"infsnz":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"iorwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"movf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"movff":{"size":4, "cycles":2, "conditional":False, "type":"Normal"},
+	"movwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"mulwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"negf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"rlcf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"rlncf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"rrcf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"rrncf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"setf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"subfwb":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"subwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"subwfb":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"swapf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"tstfsz":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"xorwf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"bcf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"bsf":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"btfsc":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"btfss":{"size":2, "cycles":1, "conditional":True, "type":"Skip"},
+	"btg":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"bc":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bn":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bnc":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bnn":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bnov":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bnz":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bov":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"bra":{"size":2, "cycles":2, "conditional":False, "type":"Branch"},
+	"bz":{"size":2, "cycles":1, "conditional":True, "type":"Branch"},
+	"call":{"size":4, "cycles":2, "conditional":False, "type":"Call"},
+	"clrwdt":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"daw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"goto":{"size":4, "cycles":2, "conditional":False, "type":"Branch"},
+	"nop":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"pop":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"push":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"rcall":{"size":2, "cycles":2, "conditional":False, "type":"Call"},
+	"reset":{"size":2, "cycles":1, "conditional":False, "type":"Unknown"},
+	"retfie":{"size":2, "cycles":2, "conditional":False, "type":"Return"},
+	"retlw":{"size":2, "cycles":2, "conditional":False, "type":"Return"},
+	"return":{"size":2, "cycles":2, "conditional":False, "type":"Return"},
+	"sleep":{"size":2, "cycles":1, "conditional":False, "type":"Unknown"},
+	"addlw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"andlw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"iorlw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"lfsr":{"size":4, "cycles":2, "conditional":False, "type":"Normal"},
+	"movlb":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"movlw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"mullw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"sublw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"xorlw":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"blrd*":{"size":2, "cycles":1, "conditional":False, "type":"Normal"},
+	"tblrd":{"size":2, "cycles":2, "conditional":False, "type":"Normal"},
+	"tblwt":{"size":2, "cycles":2, "conditional":False, "type":"Normal"},
+	"unknown":{"size":2, "cycles":1, "conditional":False, "type":"Unknown"}
 }
 
-def instructionSize(instruction):
-	return instructions[instruction][0]
 
-def instructionCycles(instruction):
-	return instructions[instruction][1]
-
-def isInstructionConditional(instruction):
-	if instructions[instruction][2] == "Conditional":
-		return True
-	else:
-		return False
-
-def instructionType(instruction):
-	return instructions[instruction][3]
 
 
 programMemory={}
@@ -175,7 +162,7 @@ def processHEX(hexfile):
 
 		address=addressInDisassemblerLine(line)
 		instruction=instructionInDisassemblerLine(line)
-		if instructionType(instruction) == "Call" or instructionType(instruction) == "Branch":
+		if instructions[instruction]["type"] == "Call" or instructions[instruction]["type"] == "Branch":
 			addressArgument=addressArgumentInDisassemblerLine(line)
 		else:
 			addressArgument=''
@@ -199,27 +186,27 @@ def maxCycles(pc, stack, depth):
 		addressArgument=programMemory[pc][1]
 
 		if addressArgument == '':
-			printverbose ("PC="+hex(pc)+": "+instruction+" ("+str(instructionCycles(instruction))+" cycles)", depth)
+			printverbose ("PC="+hex(pc)+": "+instruction+" ("+str(instructions[instruction]["cycles"])+" cycles)", depth)
 		else:
-			printverbose ("PC="+hex(pc)+": "+instruction+' '+hex(addressArgument)+" ("+str(instructionCycles(instruction))+" cycles)", depth)
+			printverbose ("PC="+hex(pc)+": "+instruction+' '+hex(addressArgument)+" ("+str(instructions[instruction]["cycles"])+" cycles)", depth)
 			
-		if instructionType(instruction)=="Unknown":
+		if instructions[instruction]["type"] == "Unknown":
 			print (instruction+" instruction found at address "+hex(pc)+". Can't continue.")
 			exit(1)
 
-		if(not isInstructionConditional(instruction)):			
+		if not instructions[instruction]["conditional"]:			
 			printverbose ('\t'+"Unconditional instruction", depth)
-			cycles+=instructionCycles(instruction)
-			pc+=instructionSize(instruction)
+			cycles += instructions[instruction]["cycles"]
+			pc += instructions[instruction]["size"]
 
-			if instructionType(instruction)=="Call":
+			if instructions[instruction]["type"] == "Call":
 				stack.append(pc)
 				printverbose ('\t'+hex(pc)+" pushed to stack", depth)
 
-			if instructionType(instruction)=="Branch" or instructionType(instruction)=="Call":
-				pc=addressArgument
+			if instructions[instruction]["type"] == "Branch" or instructions[instruction]["type"] == "Call":
+				pc = addressArgument
 
-			if instructionType(instruction)=="Return":
+			if instructions[instruction]["type"] == "Return":
 				try:
 					pc=stack.pop()
 					printverbose ('\t'+hex(pc)+" poped from stack", depth)	
@@ -229,16 +216,16 @@ def maxCycles(pc, stack, depth):
 					
 			printverbose (" ")
 		
-		if(isInstructionConditional(instruction)):
+		if instructions[instruction]["conditional"]:
 			printverbose ('\t'+"Conditional instruction\n", depth)
 
 			endReached = True
 
-			cycles+=instructionCycles(instruction)
-			pc+=instructionSize(instruction)
+			cycles += instructions[instruction]["cycles"]
+			pc += instructions[instruction]["size"]
 
 
-			if instructionType(instruction)=="Skip":
+			if instructions[instruction]["type"] == "Skip":
 				printverbose ("PATH 1 (no skip)", depth=depth+1)				
 				cyclesPath1=maxCycles(pc, stack[:], depth=depth+1) #Execution unchanged			
 
@@ -247,7 +234,7 @@ def maxCycles(pc, stack, depth):
 
 				cycles+=max(cyclesPath1, cyclesPath2+1)
 
-			if instructionType(instruction)=="Branch":
+			if instructions[instruction]["type"] == "Branch":
 				printverbose ("PATH 1 (no branch)", depth=depth+1)				
 				cyclesPath1=maxCycles(pc, stack[:], depth=depth+1) #Execution unchanged				
 
@@ -264,8 +251,8 @@ def maxCycles(pc, stack, depth):
 
 options = ''
 
-def main():	
-	global options	
+def main():
+	global options		
 	usage = "usage: python %prog [options] hexfile"
 	parser = OptionParser(usage=usage)
 	parser.add_option("-p", "--processor", dest="processor", help="processor model (default=%default)", metavar="PROC", default="18f2550")
