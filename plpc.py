@@ -262,28 +262,34 @@ def maxCycles(pc, stack, depth):
 
 	return cycles
 
+options = ''
 
-##MAIN	
-usage = "usage: python %prog [options] hexfile"
-parser = OptionParser(usage=usage)
-parser.add_option("-p", "--processor", dest="processor", help="processor model (default=%default)", metavar="PROC", default="18f2550")
-parser.add_option("-s", "--start", type="int", dest="startAddress",help="start address (default=0x%default). Decimal or hexadecimal (0xnnn) formats accepted", metavar="START_ADDRESS", default=0x08)
-parser.add_option("-f", "--frequency", type="float", dest="frequency",help="osc. frequency (default=8MHz). Scientific notation accepted, i.e. 4.2e6 (4.2 MHz)", metavar="FREQ", default=8.0e6)
-parser.add_option("-d", "--delay", type="float", dest="delay",help="delay time in seconds between instructions (default=%default sec). Useful with verbose to follow execution", metavar="TIME", default=0)
-parser.add_option("-v", "--verbose",action="store_true", dest="verbose", default=False,help="trace execution with useful info")
-(options, args) = parser.parse_args()
-try:
-	hexfile=args[0]
-except:
-	parser.print_help()
-	sys.exit(2)
+def main():	
+	global options	
+	usage = "usage: python %prog [options] hexfile"
+	parser = OptionParser(usage=usage)
+	parser.add_option("-p", "--processor", dest="processor", help="processor model (default=%default)", metavar="PROC", default="18f2550")
+	parser.add_option("-s", "--start", type="int", dest="startAddress",help="start address (default=0x%default). Decimal or hexadecimal (0xnnn) formats accepted", metavar="START_ADDRESS", default=0x08)
+	parser.add_option("-f", "--frequency", type="float", dest="frequency",help="osc. frequency (default=8MHz). Scientific notation accepted, i.e. 4.2e6 (4.2 MHz)", metavar="FREQ", default=8.0e6)
+	parser.add_option("-d", "--delay", type="float", dest="delay",help="delay time in seconds between instructions (default=%default sec). Useful with verbose to follow execution", metavar="TIME", default=0)
+	parser.add_option("-v", "--verbose",action="store_true", dest="verbose", default=False,help="trace execution with useful info")
+	(options, args) = parser.parse_args()
+	try:
+		hexfile=args[0]
+	except:
+		parser.print_help()
+		sys.exit(2)
 
 
 
-processHEX(hexfile)
-printverbose ("\n**** STARTING CALCULATIONS ****")
-cycles=maxCycles(pc=options.startAddress, stack=[], depth=0)
+	processHEX(hexfile)
+	printverbose ("\n**** STARTING CALCULATIONS ****")
+	cycles=maxCycles(pc=options.startAddress, stack=[], depth=0)
 
-printverbose ("\n**** FINAL RESULT ****")
-print "Longest Path="+str(cycles)+" cycles"
-print "Execution time="+format(4.0*cycles/options.frequency, 'g')+" sec. @ "+format(options.frequency, "g")+" Hz"
+	printverbose ("\n**** FINAL RESULT ****")
+	print "Longest Path="+str(cycles)+" cycles"
+	print "Execution time="+format(4.0*cycles/options.frequency, 'g')+" sec. @ "+format(options.frequency, "g")+" Hz"
+
+
+if __name__ == "__main__":
+	main()
