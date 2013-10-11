@@ -107,7 +107,7 @@ instructions = {
 }
 
 
-programMemory = {}
+program_memory = {}
 
 #disassembler line examples
 #000674:  2ae1  incf    0xe1, 0x1, 0
@@ -117,7 +117,7 @@ programMemory = {}
 #00067c:  c088  movff   0x88, 0x85
 
 
-def instructionInDisassemblerLine(disassemblerLine):
+def get_instruction_in_disassembler_line(disassemblerLine):
 
     try:
         instruction = disassemblerLine.split()[2]
@@ -131,12 +131,12 @@ def instructionInDisassemblerLine(disassemblerLine):
     return 'unknown'
 
 
-def addressInDisassemblerLine(disassemblerLine):
+def get_address_in_disassembler_line(disassemblerLine):
 
     return int(disassemblerLine.partition(':')[0], 16)
 
 
-def addressArgumentInDisassemblerLine(disassemblerLine):
+def get_address_argument_in_disassembler_line(disassemblerLine):
 
     #There's a '\t' between instruction (i.e. movff) and argument (i.e 0x88, 0x85)
     arguments = disassemblerLine.partition('\t')[2]
@@ -149,7 +149,7 @@ def addressArgumentInDisassemblerLine(disassemblerLine):
     return addressArgument
 
 
-def processHEX(hexfile):
+def process_hex(hexfile):
     '''Calls gpdasm disassembler and...'''
 
     args = ['gpdasm', '-p' + options.processor, hexfile]
@@ -162,19 +162,19 @@ def processHEX(hexfile):
 
         if len(line) > 2:
             logging.debug('Dissambled line: {0}'.format(line))
-            address = addressInDisassemblerLine(line)
-            instruction = instructionInDisassemblerLine(line)
+            address = get_address_in_disassembler_line(line)
+            instruction = get_instruction_in_disassembler_line(line)
             if instructions[instruction]['type'] == 'Call' or instructions[instruction]['type'] == 'Branch':
-                addressArgument = addressArgumentInDisassemblerLine(line)
+                addressArgument = get_address_argument_in_disassembler_line(line)
             else:
                 addressArgument = ''
 
-            programMemory[address] = [instruction, addressArgument]
+            program_memory[address] = [instruction, addressArgument]
         else:
             logging.warning('Line too short')
 
 
-def maxCycles(pc, stack, depth):
+def calculate_max_cycles(pc, stack, depth):
     '''Returns the maximum number of cycles starting at pc until a RETURN, RETLW or RETFIE is found.'''
 
     endReached = False
@@ -184,8 +184,8 @@ def maxCycles(pc, stack, depth):
         print_verbose(str(cycles) + ' cycles since last conditional', depth=depth)
         print_verbose('Next PC=' + hex(pc) + '\n', depth=depth)
         time.sleep(options.delay)
-        instruction = programMemory[pc][0]
-        addressArgument = programMemory[pc][1]
+        instruction = program_memory[pc][0]
+        addressArgument = program_memory[pc][1]
 
         if addressArgument == '':
             print_verbose('PC=' + hex(pc) + ': ' + instruction + ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
@@ -228,19 +228,19 @@ def maxCycles(pc, stack, depth):
 
             if instructions[instruction]['type'] == 'Skip':
                 print_verbose('PATH 1 (no skip)', depth=depth + 1)
-                cyclesPath1 = maxCycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
+                cyclesPath1 = calculate_max_cycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
 
                 print_verbose('PATH 2 (skip) (+1 cycle)', depth=depth + 1)
-                cyclesPath2 = maxCycles(pc + 2, stack[:], depth=depth + 1)  # Execution changed (Inst skipped)
+                cyclesPath2 = calculate_max_cycles(pc + 2, stack[:], depth=depth + 1)  # Execution changed (Inst skipped)
 
                 cycles += max(cyclesPath1, cyclesPath2 + 1)
 
             if instructions[instruction]['type'] == 'Branch':
                 print_verbose('PATH 1 (no branch)', depth=depth + 1)
-                cyclesPath1 = maxCycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
+                cyclesPath1 = calculate_max_cycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
 
                 print_verbose('PATH 2 (branch) (+1 cycle)', depth=depth + 1)
-                cyclesPath2 = maxCycles(addressArgument, stack[:], depth=depth + 1)  # Execution changed (branch)
+                cyclesPath2 = calculate_max_cycles(addressArgument, stack[:], depth=depth + 1)  # Execution changed (branch)
 
                 cycles += max(cyclesPath1, cyclesPath2 + 1)
 
@@ -265,9 +265,9 @@ def main():
         parser.print_help()
         sys.exit(2)
 
-    processHEX(hexfile)
+    process_hex(hexfile)
     print_verbose('\n**** STARTING CALCULATIONS ****')
-    cycles = maxCycles(pc=options.startAddress, stack=[], depth=0)
+    cycles = calculate_max_cycles(pc=options.startAddress, stack=[], depth=0)
 
     print_verbose('\n**** FINAL RESULT ****')
     print 'Longest Path=' + str(cycles) + ' cycles'
