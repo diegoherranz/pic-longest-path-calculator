@@ -19,8 +19,10 @@
 import sys
 import time
 import subprocess
-import tempfile
+import logging
 from optparse import OptionParser
+
+logging.basicConfig(level=logging.WARNING)
 
 def printverbose(toPrint, depth=0):
 	"""Prints only if verbose is enabled. Adds as many tabs as depth parameter"""
@@ -150,26 +152,28 @@ def addressArgumentInDisassemblerLine(disassemblerLine):
 def processHEX(hexfile):
 	"""Calls gpdasm disassembler and..."""
 
-	f = tempfile.TemporaryFile(mode='w+t')
+	
 	args=["gpdasm", "-p"+options.processor, hexfile]
-	p=subprocess.Popen(args, stdout=f)
+	output = subprocess.check_output(args)
 	printverbose("Disassembler call: "+" ".join(args)+"\n")
-	p.wait()
 
-	f.seek(0)
+	logging.debug("Full Dissambled code:\n{0}".format(output))
 
-	for line in f:
+	for line in output.splitlines():
 
-		address=addressInDisassemblerLine(line)
-		instruction=instructionInDisassemblerLine(line)
-		if instructions[instruction]["type"] == "Call" or instructions[instruction]["type"] == "Branch":
-			addressArgument=addressArgumentInDisassemblerLine(line)
+		if len(line) > 2:
+			logging.debug("Dissambled line: {0}".format(line))
+			address=addressInDisassemblerLine(line)
+			instruction=instructionInDisassemblerLine(line)
+			if instructions[instruction]["type"] == "Call" or instructions[instruction]["type"] == "Branch":
+				addressArgument=addressArgumentInDisassemblerLine(line)
+			else:
+				addressArgument=''
+
+			programMemory[address]=[instruction, addressArgument]
 		else:
-			addressArgument=''
+			logging.warning("Line too short")
 
-		programMemory[address]=[instruction, addressArgument]
-
-	f.close()
 
 
 def maxCycles(pc, stack, depth):	
