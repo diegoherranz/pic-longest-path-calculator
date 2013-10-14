@@ -1,7 +1,7 @@
 # PLPC
 # PIC LONGEST PATH CALCULATOR
 
-# Copyright (C) 2011 Diego Herranz
+# Copyright (C) 2011-2013 Diego Herranz
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import time
 import subprocess
 import logging
@@ -190,7 +189,8 @@ def calculate_max_cycles(pc, stack, depth):
         if addressArgument == '':
             print_verbose('PC=' + hex(pc) + ': ' + instruction + ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
         else:
-            print_verbose('PC=' + hex(pc) + ': ' + instruction + ' ' + hex(addressArgument) + ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
+            print_verbose('PC=' + hex(pc) + ': ' + instruction + ' ' + hex(addressArgument) +
+                          ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
 
         if instructions[instruction]['type'] == 'Unknown':
             print (instruction + ' instruction found at address ' + hex(pc) + '. Can\'t continue.')
@@ -211,7 +211,7 @@ def calculate_max_cycles(pc, stack, depth):
             if instructions[instruction]['type'] == 'Return':
                 try:
                     pc = stack.pop()
-                    print_verbose('\t' + hex(pc) + ' poped from stack', depth)
+                    print_verbose('\t' + hex(pc) + ' popped from stack', depth)
                 except IndexError:
                     endReached = True
                     print_verbose('\t' + 'Stack underflow. End reached', depth)
@@ -250,18 +250,29 @@ cli_args = ''
 
 def main():
     global cli_args
-    parser = argparse.ArgumentParser(description='Calculate the maximum number of cycles required to execute a PIC function.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(description='Calculate the maximum number of cycles required to execute a PIC function.',
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
     parser.add_argument("hexfile", help="hex file with PIC program")
-    parser.add_argument('-p', '--processor', help='processor model', metavar='PROC', default='18f2550')
-    parser.add_argument('-s', '--start', type=int, dest='startAddress', help='start address. Decimal or hexadecimal (0xnnn) formats accepted', metavar='START_ADDRESS', default=0x08)
-    parser.add_argument('-f', '--frequency', type=float, dest='frequency', help='osc. frequency. Scientific notation accepted, i.e. 4.2e6 (4.2 MHz)', metavar='FREQ', default=8.0e6)
-    parser.add_argument('-d', '--delay', type=float, dest='delay', help='delay time in seconds between instructions. Useful with verbose to follow execution', metavar='TIME', default=0)
-    parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='trace execution with useful info')
+    parser.add_argument('-p', '--processor', help='processor model',
+                        metavar='PROC', default='18f2550')
+    parser.add_argument('-s', '--start-address', type=int,
+                        help='start address. Decimal or hexadecimal (0xnnn) formats accepted',
+                        metavar='START_ADDRESS', default=0x08)
+    parser.add_argument('-f', '--frequency', type=float,
+                        help='osc. frequency. Scientific notation accepted, i.e. 4.2e6 (4.2 MHz)',
+                        metavar='FREQ', default=8.0e6)
+    parser.add_argument('-d', '--delay', type=float,
+                        help='delay time in seconds between instructions. Useful with verbose to follow execution',
+                        metavar='TIME', default=0)
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='trace execution with useful info')
+
     cli_args = parser.parse_args()
 
     process_hex(cli_args.hexfile)
     print_verbose('\n**** STARTING CALCULATIONS ****')
-    cycles = calculate_max_cycles(pc=cli_args.startAddress, stack=[], depth=0)
+    cycles = calculate_max_cycles(pc=cli_args.start_address, stack=[], depth=0)
 
     print_verbose('\n**** FINAL RESULT ****')
     print 'Longest Path=' + str(cycles) + ' cycles'
