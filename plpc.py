@@ -20,14 +20,14 @@ import sys
 import time
 import subprocess
 import logging
-from optparse import OptionParser
+import argparse
 
 logging.basicConfig(level=logging.WARNING)
 
 
 def print_verbose(toPrint, depth=0):
     '''Prints only if verbose is enabled. Adds as many tabs as depth parameter'''
-    if options.verbose:
+    if cli_args.verbose:
         print ('\t' * depth + toPrint)
 
 
@@ -152,7 +152,7 @@ def get_address_argument_in_disassembler_line(disassemblerLine):
 def process_hex(hexfile):
     '''Calls gpdasm disassembler and...'''
 
-    args = ['gpdasm', '-p' + options.processor, hexfile]
+    args = ['gpdasm', '-p' + cli_args.processor, hexfile]
     output = subprocess.check_output(args)
     print_verbose('Disassembler call: ' + ' '.join(args) + '\n')
 
@@ -183,7 +183,7 @@ def calculate_max_cycles(pc, stack, depth):
     while not endReached:
         print_verbose(str(cycles) + ' cycles since last conditional', depth=depth)
         print_verbose('Next PC=' + hex(pc) + '\n', depth=depth)
-        time.sleep(options.delay)
+        time.sleep(cli_args.delay)
         instruction = program_memory[pc][0]
         addressArgument = program_memory[pc][1]
 
@@ -212,7 +212,7 @@ def calculate_max_cycles(pc, stack, depth):
                 try:
                     pc = stack.pop()
                     print_verbose('\t' + hex(pc) + ' poped from stack', depth)
-                except:
+                except IndexError:
                     endReached = True
                     print_verbose('\t' + 'Stack underflow. End reached', depth)
 
@@ -246,32 +246,26 @@ def calculate_max_cycles(pc, stack, depth):
 
     return cycles
 
-options = ''
-
+cli_args = ''
 
 def main():
-    global options
-    usage = 'usage: python %prog [options] hexfile'
-    parser = OptionParser(usage=usage)
-    parser.add_option('-p', '--processor', dest='processor', help='processor model (default=%default)', metavar='PROC', default='18f2550')
-    parser.add_option('-s', '--start', type='int', dest='startAddress', help='start address (default=0x%default). Decimal or hexadecimal (0xnnn) formats accepted', metavar='START_ADDRESS', default=0x08)
-    parser.add_option('-f', '--frequency', type='float', dest='frequency', help='osc. frequency (default=8MHz). Scientific notation accepted, i.e. 4.2e6 (4.2 MHz)', metavar='FREQ', default=8.0e6)
-    parser.add_option('-d', '--delay', type='float', dest='delay', help='delay time in seconds between instructions (default=%default sec). Useful with verbose to follow execution', metavar='TIME', default=0)
-    parser.add_option('-v', '--verbose', action='store_true', dest='verbose', default=False, help='trace execution with useful info')
-    (options, args) = parser.parse_args()
-    try:
-        hexfile = args[0]
-    except:
-        parser.print_help()
-        sys.exit(2)
+    global cli_args
+    parser = argparse.ArgumentParser(description='Calculate the maximum number of cycles required to execute a PIC function.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("hexfile", help="hex file with PIC program")
+    parser.add_argument('-p', '--processor', help='processor model', metavar='PROC', default='18f2550')
+    parser.add_argument('-s', '--start', type=int, dest='startAddress', help='start address. Decimal or hexadecimal (0xnnn) formats accepted', metavar='START_ADDRESS', default=0x08)
+    parser.add_argument('-f', '--frequency', type=float, dest='frequency', help='osc. frequency. Scientific notation accepted, i.e. 4.2e6 (4.2 MHz)', metavar='FREQ', default=8.0e6)
+    parser.add_argument('-d', '--delay', type=float, dest='delay', help='delay time in seconds between instructions. Useful with verbose to follow execution', metavar='TIME', default=0)
+    parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='trace execution with useful info')
+    cli_args = parser.parse_args()
 
-    process_hex(hexfile)
+    process_hex(cli_args.hexfile)
     print_verbose('\n**** STARTING CALCULATIONS ****')
-    cycles = calculate_max_cycles(pc=options.startAddress, stack=[], depth=0)
+    cycles = calculate_max_cycles(pc=cli_args.startAddress, stack=[], depth=0)
 
     print_verbose('\n**** FINAL RESULT ****')
     print 'Longest Path=' + str(cycles) + ' cycles'
-    print 'Execution time=' + format(4.0 * cycles / options.frequency, 'g') + ' sec. @ ' + format(options.frequency, 'g') + ' Hz'
+    print 'Execution time=' + format(4.0 * cycles / cli_args.frequency, 'g') + ' sec. @ ' + format(cli_args.frequency, 'g') + ' Hz'
 
 
 if __name__ == '__main__':
