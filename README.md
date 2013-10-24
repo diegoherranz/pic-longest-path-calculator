@@ -4,9 +4,11 @@ PIC Longest Path Calculator
 Introduction
 ---------------
 
-*PIC Longest Path Calculator (PLPC)* is a Python tool to calculate the maximum number of cycles required to execute a PIC function reading a hex file. It also shows the maximum execution time at a specified frequency from the number of cycles calculated before.
+*PIC Longest Path Calculator (PLPC)* is a Python tool to calculate the maximum number of cycles required to execute a PIC18 (16-bit instruction bus) function reading a hex file. It also shows the maximum execution time at a specified frequency from the number of cycles calculated before.
+
+It's useful for critical or real-time system which need to know the worst-case maximum execution time of a routine.
   
-Execution starts at specified address and ends when a RETURN, RETLW or RETFIE instruction is found\footnote{It has to be a RETURN, RETLW or RETFIE with empty call stack so if a call is made, the return instruction in that rutine doesn't make \productstring{} end.}.
+Execution starts at specified address and ends when a return-like instruction (RETURN, RETLW or RETFIE) is found on the same level, i.e. if another function is called, the return from that function does not make PLPC end.
 
 
 
@@ -17,8 +19,8 @@ Starting at address 0x08 (high priority interrupt), frequency 8 MHz:
 
 	$ python plpc.py hexfile.hex
 
-	Longest Path=46 cycles
-	Execution time=2.3e-05 sec. @ 8e+06 Hz
+	Longest Path = 46 cycles
+	Execution time = 2.3e-05 sec. @ 8e+06 Hz
 
 Starting at address 0x08 (high priority interrupt), frequency 8 MHz, verbose and 2 seconds delay between instructions.
 
@@ -26,15 +28,15 @@ Starting at address 0x08 (high priority interrupt), frequency 8 MHz, verbose and
 
 	[...] Verbose execution of the program
 
-	Longest Path=46 cycles
-	Execution time=2.3e-05 sec. @ 8e+06 Hz
+	Longest Path = 46 cycles
+	Execution time = 2.3e-05 sec. @ 8e+06 Hz
 	
 Starting at address 0x7b4, frequency 2 MHz.
 
 	$ python plpc.py -s 0x7b4 -f 2e6 hexfile.hex
 
-	Longest Path=3 cycles
-	Execution time=6e-06 sec. @ 2e+06 Hz
+	Longest Path = 3 cycles
+	Execution time = 6e-06 sec. @ 2e+06 Hz
 
 
 
@@ -44,7 +46,7 @@ Known limitations and workarounds
 ---------------------------------------------
 
 ### Loops
-You can notice [...] if python says "maximum recursion depth exceeded".
+You can notice there is a problem with a loop if python complains with "maximum recursion depth exceeded". This can happen with diferent types of loops:
 
 * Undefined loops
 		
