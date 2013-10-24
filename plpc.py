@@ -14,7 +14,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import time
 import subprocess
@@ -106,8 +106,6 @@ instructions = {
 }
 
 
-program_memory = {}
-
 #disassembler line examples
 #000674:  2ae1  incf    0xe1, 0x1, 0
 #000676:  ec02  call    0x4, 0
@@ -150,6 +148,7 @@ def get_address_argument_in_disassembler_line(disassemblerLine):
 
 def process_hex(hexfile):
     '''Calls gpdasm disassembler and...'''
+    program_memory = {}
 
     args = ['gpdasm', '-p' + cli_args.processor, hexfile]
     output = subprocess.check_output(args)
@@ -171,6 +170,8 @@ def process_hex(hexfile):
             program_memory[address] = [instruction, addressArgument]
         else:
             logging.warning('Line too short')
+
+    return program_memory	
 
 
 def calculate_max_cycles(pc, stack, depth):
@@ -246,10 +247,9 @@ def calculate_max_cycles(pc, stack, depth):
 
     return cycles
 
-cli_args = ''
 
-def main():
-    global cli_args
+if __name__ == '__main__':
+
     parser = argparse.ArgumentParser(description='Calculate the maximum number of cycles required to execute a PIC function.',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
@@ -270,7 +270,7 @@ def main():
 
     cli_args = parser.parse_args()
 
-    process_hex(cli_args.hexfile)
+    program_memory = process_hex(cli_args.hexfile)
     print_verbose('\n**** STARTING CALCULATIONS ****')
     cycles = calculate_max_cycles(pc=cli_args.start_address, stack=[], depth=0)
 
@@ -278,6 +278,3 @@ def main():
     print 'Longest Path=' + str(cycles) + ' cycles'
     print 'Execution time=' + format(4.0 * cycles / cli_args.frequency, 'g') + ' sec. @ ' + format(cli_args.frequency, 'g') + ' Hz'
 
-
-if __name__ == '__main__':
-    main()
