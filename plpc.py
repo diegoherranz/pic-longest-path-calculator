@@ -16,6 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+# These two __future__ imports make print and division to behave like python 3
+# to ease a possible future migration from python 2.X
+# http://docs.python.org/3/whatsnew/3.0.html#print-is-a-function
+# http://www.python.org/dev/peps/pep-0238/
+from __future__ import division
+from __future__ import print_function
+
 import time
 import subprocess
 import logging
@@ -27,7 +35,7 @@ logging.basicConfig(level=logging.WARNING)
 def print_verbose(toPrint, depth=0):
     '''Prints only if verbose is enabled. Adds as many tabs as depth parameter'''
     if cli_args.verbose:
-        print ('\t' * depth + toPrint)
+        print('\t' * depth + toPrint)
 
 
 # Note: cycles not including exec. change in conditionals
@@ -194,7 +202,7 @@ def calculate_max_cycles(pc, stack, depth):
                           ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
 
         if instructions[instruction]['type'] == 'Unknown':
-            print (instruction + ' instruction found at address ' + hex(pc) + '. Can\'t continue.')
+            logging.error(instruction + ' instruction found at address ' + hex(pc) + '. Can\'t continue.')
             exit(1)
 
         if not instructions[instruction]['conditional']:
@@ -275,6 +283,6 @@ if __name__ == '__main__':
     cycles = calculate_max_cycles(pc=cli_args.start_address, stack=[], depth=0)
 
     print_verbose('\n**** FINAL RESULT ****')
-    print 'Longest Path=' + str(cycles) + ' cycles'
-    print 'Execution time=' + format(4.0 * cycles / cli_args.frequency, 'g') + ' sec. @ ' + format(cli_args.frequency, 'g') + ' Hz'
+    print('Longest Path = ' + str(cycles) + ' cycles')
+    print('Execution time = ' + format(4 * cycles / cli_args.frequency, 'g') + ' sec. @ ' + format(cli_args.frequency, 'g') + ' Hz')
 
