@@ -1,6 +1,8 @@
 PIC Longest Path Calculator
 =======================
 
+[![Build Status](https://travis-ci.org/diegoherranz/pic-longest-path-calculator.svg?branch=master)](https://travis-ci.org/diegoherranz/pic-longest-path-calculator)
+
 Introduction
 ---------------
 
