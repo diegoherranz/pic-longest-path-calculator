@@ -40,86 +40,86 @@ def print_verbose(toPrint, depth=0):
 
 # Note: cycles not including exec. change in conditionals
 instructions = {
-        'addwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'addwfc': {'size':  2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'andwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'clrf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'comf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'cpfseq': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'cpfsgt': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'cpfslt': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'decf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'decfsz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'dcfsnz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'incf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'incfsz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'infsnz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'iorwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'movf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'movff': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
-        'movwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'mulwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'negf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'rlcf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'rlncf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'rrcf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'rrncf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'setf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'subfwb': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'subwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'subwfb': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'swapf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'tstfsz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'xorwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'bcf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'bsf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'btfsc': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'btfss': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
-        'btg': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'bc': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bn': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bnc': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bnn': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bnov': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bnz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bov': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'bra': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Branch'},
-        'bz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
-        'call': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Call'},
-        'clrwdt': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'daw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'goto': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Branch'},
-        'nop': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'pop': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'push': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'rcall': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Call'},
-        'reset': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Unknown'},
-        'retfie': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Return'},
-        'retlw': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Return'},
-        'return': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Return'},
-        'sleep': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Unknown'},
-        'addlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'andlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'iorlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'lfsr': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
-        'movlb': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'movlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'mullw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'sublw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'xorlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'blrd*': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
-        'tblrd': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
-        'tblwt': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
-        'unknown': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Unknown'}
+    'addwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'addwfc': {'size':  2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'andwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'clrf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'comf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'cpfseq': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'cpfsgt': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'cpfslt': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'decf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'decfsz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'dcfsnz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'incf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'incfsz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'infsnz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'iorwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'movf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'movff': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
+    'movwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'mulwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'negf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'rlcf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'rlncf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'rrcf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'rrncf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'setf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'subfwb': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'subwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'subwfb': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'swapf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'tstfsz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'xorwf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'bcf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'bsf': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'btfsc': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'btfss': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Skip'},
+    'btg': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'bc': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bn': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bnc': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bnn': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bnov': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bnz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bov': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'bra': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Branch'},
+    'bz': {'size': 2, 'cycles': 1, 'conditional': True, 'type': 'Branch'},
+    'call': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Call'},
+    'clrwdt': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'daw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'goto': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Branch'},
+    'nop': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'pop': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'push': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'rcall': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Call'},
+    'reset': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Unknown'},
+    'retfie': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Return'},
+    'retlw': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Return'},
+    'return': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Return'},
+    'sleep': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Unknown'},
+    'addlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'andlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'iorlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'lfsr': {'size': 4, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
+    'movlb': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'movlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'mullw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'sublw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'xorlw': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'blrd*': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Normal'},
+    'tblrd': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
+    'tblwt': {'size': 2, 'cycles': 2, 'conditional': False, 'type': 'Normal'},
+    'unknown': {'size': 2, 'cycles': 1, 'conditional': False, 'type': 'Unknown'}
 }
 
 
-#disassembler line examples
-#000674:  2ae1  incf    0xe1, 0x1, 0
-#000676:  ec02  call    0x4, 0
-#000678:  f000
-#00067a:  d012  bra     0x6a0
-#00067c:  c088  movff   0x88, 0x85
+# disassembler line examples
+# 000674:  2ae1  incf    0xe1, 0x1, 0
+# 000676:  ec02  call    0x4, 0
+# 000678:  f000
+# 00067a:  d012  bra     0x6a0
+# 00067c:  c088  movff   0x88, 0x85
 
 
 def get_instruction_in_disassembler_line(disassemblerLine):
@@ -129,7 +129,8 @@ def get_instruction_in_disassembler_line(disassemblerLine):
         if instruction in instructions.keys():
             return instruction
     except:
-        # If not instruction found, if migth be a nop if instruction is 0xfnnn (address 000678 in the example lines before)
+        # If not instruction found, if might be a nop if instruction
+        # is 0xfnnn (address 000678 in the example lines before)
         if disassemblerLine.split()[1][0] == 'f':
             return 'nop'
 
@@ -143,15 +144,15 @@ def get_address_in_disassembler_line(disassemblerLine):
 
 def get_address_argument_in_disassembler_line(disassemblerLine):
 
-    #There's a '\t' between instruction (i.e. movff) and argument (i.e 0x88, 0x85)
+    # There's a '\t' between instruction (i.e. movff) and argument (i.e 0x88, 0x85)
     arguments = disassemblerLine.partition('\t')[2]
 
     try:
-        addressArgument = int(arguments.partition(',')[0], 16)
+        address_argument = int(arguments.partition(',')[0], 16)
     except:
-        addressArgument = 0
+        address_argument = 0
 
-    return addressArgument
+    return address_argument
 
 
 def process_hex(hexfile):
@@ -171,34 +172,34 @@ def process_hex(hexfile):
             address = get_address_in_disassembler_line(line)
             instruction = get_instruction_in_disassembler_line(line)
             if instructions[instruction]['type'] == 'Call' or instructions[instruction]['type'] == 'Branch':
-                addressArgument = get_address_argument_in_disassembler_line(line)
+                address_argument = get_address_argument_in_disassembler_line(line)
             else:
-                addressArgument = ''
+                address_argument = ''
 
-            program_memory[address] = [instruction, addressArgument]
+            program_memory[address] = [instruction, address_argument]
         else:
             logging.warning('Line too short')
 
-    return program_memory	
+    return program_memory
 
 
 def calculate_max_cycles(pc, stack, depth):
     '''Returns the maximum number of cycles starting at pc until a RETURN, RETLW or RETFIE is found.'''
 
-    endReached = False
+    end_reached = False
     cycles = 0
 
-    while not endReached:
+    while not end_reached:
         print_verbose(str(cycles) + ' cycles since last conditional', depth=depth)
         print_verbose('Next PC=' + hex(pc) + '\n', depth=depth)
         time.sleep(cli_args.delay)
         instruction = program_memory[pc][0]
-        addressArgument = program_memory[pc][1]
+        address_argument = program_memory[pc][1]
 
-        if addressArgument == '':
+        if address_argument == '':
             print_verbose('PC=' + hex(pc) + ': ' + instruction + ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
         else:
-            print_verbose('PC=' + hex(pc) + ': ' + instruction + ' ' + hex(addressArgument) +
+            print_verbose('PC=' + hex(pc) + ': ' + instruction + ' ' + hex(address_argument) +
                           ' (' + str(instructions[instruction]['cycles']) + ' cycles)', depth)
 
         if instructions[instruction]['type'] == 'Unknown':
@@ -215,14 +216,14 @@ def calculate_max_cycles(pc, stack, depth):
                 print_verbose('\t' + hex(pc) + ' pushed to stack', depth)
 
             if instructions[instruction]['type'] == 'Branch' or instructions[instruction]['type'] == 'Call':
-                pc = addressArgument
+                pc = address_argument
 
             if instructions[instruction]['type'] == 'Return':
                 try:
                     pc = stack.pop()
                     print_verbose('\t' + hex(pc) + ' popped from stack', depth)
                 except IndexError:
-                    endReached = True
+                    end_reached = True
                     print_verbose('\t' + 'Stack underflow. End reached', depth)
 
             print_verbose(' ')
@@ -230,28 +231,28 @@ def calculate_max_cycles(pc, stack, depth):
         if instructions[instruction]['conditional']:
             print_verbose('\t' + 'Conditional instruction\n', depth)
 
-            endReached = True
+            end_reached = True
 
             cycles += instructions[instruction]['cycles']
             pc += instructions[instruction]['size']
 
             if instructions[instruction]['type'] == 'Skip':
                 print_verbose('PATH 1 (no skip)', depth=depth + 1)
-                cyclesPath1 = calculate_max_cycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
+                cycles_path1 = calculate_max_cycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
 
                 print_verbose('PATH 2 (skip) (+1 cycle)', depth=depth + 1)
-                cyclesPath2 = calculate_max_cycles(pc + 2, stack[:], depth=depth + 1)  # Execution changed (Inst skipped)
+                cycles_path2 = calculate_max_cycles(pc + 2, stack[:], depth=depth + 1)  # Execution changed (Inst skipped)
 
-                cycles += max(cyclesPath1, cyclesPath2 + 1)
+                cycles += max(cycles_path1, cycles_path2 + 1)
 
             if instructions[instruction]['type'] == 'Branch':
                 print_verbose('PATH 1 (no branch)', depth=depth + 1)
-                cyclesPath1 = calculate_max_cycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
+                cycles_path1 = calculate_max_cycles(pc, stack[:], depth=depth + 1)  # Execution unchanged
 
                 print_verbose('PATH 2 (branch) (+1 cycle)', depth=depth + 1)
-                cyclesPath2 = calculate_max_cycles(addressArgument, stack[:], depth=depth + 1)  # Execution changed (branch)
+                cycles_path2 = calculate_max_cycles(address_argument, stack[:], depth=depth + 1)  # Execution changed (branch)
 
-                cycles += max(cyclesPath1, cyclesPath2 + 1)
+                cycles += max(cycles_path1, cycles_path2 + 1)
 
     return cycles
 
@@ -285,4 +286,3 @@ if __name__ == '__main__':
     print_verbose('\n**** FINAL RESULT ****')
     print('Longest Path = ' + str(cycles) + ' cycles')
     print('Execution time = ' + format(4 * cycles / cli_args.frequency, 'g') + ' sec. @ ' + format(cli_args.frequency, 'g') + ' Hz')
-

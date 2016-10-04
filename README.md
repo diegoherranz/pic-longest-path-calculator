@@ -22,7 +22,7 @@ Operating principle
 -------------------
 Execution starts at specified address of the PIC program memory and ends when a return-like instruction (`RETURN`, `RETLW` or `RETFIE`) is found on the same level, i.e. if another function is called, the return from that function does not make PLPC end.
 
-Whenever a conditional instruction is found (e.g. `BTFSC`, `BZ`, etc.), both possible paths are analyzed. On each of those possibilities, a conditional instrucction will again open two possible paths and so on recursively. Thus, execution path opens like a tree. Finally, the longest path on the tree will be the longest execution path or worst case.
+Whenever a conditional instruction is found (e.g. `BTFSC`, `BZ`, etc.), both possible paths are analyzed. On each of those possibilities, a conditional instruction will again open two possible paths and so on recursively. Thus, execution path opens like a tree. Finally, the longest path on the tree will be the longest execution path or worst case.
 
 Due to the use of recursion, the code is quite simple and easy to read.
 
@@ -45,7 +45,7 @@ Examples
 
         Longest Path = 46 cycles
         Execution time = 2.3e-05 sec. @ 8e+06 Hz
-	
+
 - Starting at a function which is located at address 0x7b4, frequency 2 MHz.
 
         $ python plpc.py -s 0x7b4 -f 2e6 hexfile.hex
@@ -61,7 +61,7 @@ Known limitations and workarounds
 You can notice there is a problem with a loop if python complains with "maximum recursion depth exceeded". This can happen with diferent types of loops:
 
 - **Undefined loops**. There are loops which depend on something external like this one:
-		
+
 		while(PORTBbits.PORTB1){
 		[...]
 		}		
@@ -70,11 +70,11 @@ There is no way to know when that loop is going to end. So PLPC always considers
 - **Defined loops**. Even if the loop has a defined number of cycles after which it will always exit, a full simulator would be needed. Workaround: none.
 
 ### Jump tables or writings to PC
-		
+
 Jump tables can be created by writing program counter (PC) directly. This changes the execution path, but whereas a `CALL`, `BRA`, `BZ` or similar instructions include an argument specifying the next address to be executed, writing to PC would require a full simulator to know the following address to be executed.
-			
-For instance, [SDCC](http://sdcc.sourceforge.net/) uses jump tables for switch statements.	
-	
+
+For instance, [SDCC](http://sdcc.sourceforge.net/) uses jump tables for switch statements.
+
 Workaround: Rewriting *switch* statements as several *if* statements could solve the problem although it creates a path with may have a slightly different length.
 
 
